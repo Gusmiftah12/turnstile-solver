@@ -1,15 +1,16 @@
 import time
 
-import flask
+from flask import Flask, jsonify
 import playwright.sync_api
 
 app = flask.Flask(__name__)
 from utils import solver
 
 
-@app.route("/")
-def index():
-    return flask.redirect("https://github.com/Euro-pol/turnaround-api")
+@app.route('/', methods=['GET'])
+def health_check():
+    return jsonify({"status": "ok", "message": "Service is running"}), 200
+
 
 
 @app.route("/solve", methods=["POST"])
