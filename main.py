@@ -1,21 +1,17 @@
 import time
-
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, make_response
 import playwright.sync_api
-
-app = flask.Flask(__name__)
 from utils import solver
 
+app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def health_check():
     return jsonify({"status": "ok", "message": "Service is running"}), 200
 
-
-
 @app.route("/solve", methods=["POST"])
 def solve():
-    json_data = flask.request.json
+    json_data = request.json
     sitekey = json_data["sitekey"]
     invisible = json_data["invisible"]
     url = json_data["url"]
@@ -29,12 +25,10 @@ def solve():
         s.terminate()
         return make_response(token)
 
-
 def make_response(captcha_key):
     if captcha_key == "failed":
-        return flask.jsonify({"status": "error", "token": None})
-    return flask.jsonify({"status": "success", "token": captcha_key})
-
+        return jsonify({"status": "error", "token": None})
+    return jsonify({"status": "success", "token": captcha_key})
 
 if __name__ == "__main__":
     app.run()
