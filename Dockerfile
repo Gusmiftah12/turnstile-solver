@@ -1,9 +1,3 @@
-FROM python:3.10-slim
-
-WORKDIR /app
-
-COPY requirements.txt .
-
 RUN apt-get update && apt-get install -y \
     libxcb-shm0 \
     libx11-xcb1 \
@@ -18,16 +12,11 @@ RUN apt-get update && apt-get install -y \
     libxi6 \
     libxtst6 \
     libgtk-3-0 \
-    libgdk-3-0 \
     libpangocairo-1.0-0 \
     libpango-1.0-0 \
-    libatk-1.0-0 \
     libcairo-gobject2 \
     libcairo2 \
     libgdk-pixbuf-2.0-0 \
-    libgio-2.0-0 \
-    libgobject-2.0-0 \
-    libglib-2.0-0 \
     libasound2 \
     libxrender1 \
     libfreetype6 \
@@ -35,13 +24,3 @@ RUN apt-get update && apt-get install -y \
     libdbus-glib-1-2 \
     libdbus-1-3 \
     && rm -rf /var/lib/apt/lists/*
-
-RUN pip install --no-cache-dir -r requirements.txt
-
-RUN python -m playwright install
-
-COPY . .
-
-EXPOSE 5000
-
-CMD ["python", "main.py"]
