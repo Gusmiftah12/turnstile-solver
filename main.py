@@ -1,19 +1,6 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
 from xvfbwrapper import Xvfb
 from patchright.async_api import async_playwright
 import asyncio
-import requests  # Untuk melakukan request pada testing
-
-app = FastAPI()
-
-class TurnstileRequest(BaseModel):
-    site: str = "https://d000d.com/e/b0pckrukog0h"  # Default site
-    sitekey: str = "0x4AAAAAAALn0BYsCrtFUbm_"       # Default sitekey
-
-@app.get("/")
-async def health_check():
-    return {"status": "ok", "message": "Turnstile Solver API is running"}
 
 async def make_payload(site, key):
     return {
@@ -65,53 +52,11 @@ async def solver(site, sitekey):
         vdisplay.stop()
         return {"token": None, "status": "ERR"}
 
-@app.post("/solve-turnstile")
-async def solve_turnstile(request: TurnstileRequest):
-    try:
-        result = await solver(request.site, request.sitekey)
-        return result
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+def R(site, sitekey):
+    loop = asyncio.get_event_loop()
+    return loop.run_until_complete(solver(site, sitekey))
 
-# Bagian utama untuk menjalankan API
 if __name__ == "__main__":
-    import uvicorn
-    from multiprocessing import Process
-    import time
-
-    def run_server():
-        """Fungsi untuk menjalankan API."""
-        uvicorn.run(app, host="127.0.0.1", port=8000)
-
-    def run_tests():
-        """Fungsi untuk mengetes API setelah server berjalan."""
-        print("\n[INFO] Menjalankan health check...")
-        try:
-            response = requests.get("http://127.0.0.1:8000/")
-            print("[TEST] Health Check:", response.json())
-        except Exception as e:
-            print("[ERROR] Health check gagal:", e)
-
-        print("\n[INFO] Menjalankan test solve-turnstile...")
-        try:
-            response = requests.post(
-                "http://127.0.0.1:8000/solve-turnstile",
-                json={"site": "https://d000d.com/e/b0pckrukog0h", "sitekey": "0x4AAAAAAALn0BYsCrtFUbm_"}
-            )
-            print("[TEST] Solve Turnstile:", response.json())
-        except Exception as e:
-            print("[ERROR] Test solve-turnstile gagal:", e)
-
-    # Jalankan server API di proses terpisah
-    server_process = Process(target=run_server)
-    server_process.start()
-
-    # Beri waktu untuk server API berjalan
-    time.sleep(2)
-
-    # Jalankan testing
-    run_tests()
-
-    # Hentikan server setelah testing selesai
-    server_process.terminate()
-    server_process.join()
+    # Test langsung
+    result = R("https://d000d.com/e/b0pckrukog0h", "0x4AAAAAAALn0BYsCrtFUbm_")
+    print(result)
