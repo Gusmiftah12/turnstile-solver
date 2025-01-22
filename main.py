@@ -224,6 +224,7 @@ if __name__ == "__main__":
         url="https://zenix.vast.sh",
         sitekey="0x4AAAAAAA5uSgCPW0Bgjzmf",
         invisible=True,
-        debug=True
+        debug=True,
+        headless=True
     )
     print(result)
