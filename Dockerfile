@@ -31,7 +31,7 @@ RUN apt-get update && apt-get install -y xvfb
 RUN pip install --no-cache-dir xvfbwrapper patchright fastapi[standard]
 RUN python -m patchright install-deps chromium
 RUN python -m patchright install chromium
-
+RUN pip install logmagix
 # Expose port 5000
 EXPOSE 5000
 CMD ["python", "main.py"]
