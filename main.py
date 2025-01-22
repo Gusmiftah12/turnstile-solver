@@ -1,5 +1,4 @@
 import time
-
 from typing import Dict, Optional
 from dataclasses import dataclass
 from zlib import decompress
@@ -227,3 +226,4 @@ if __name__ == "__main__":
         invisible=True,
         debug=True
     )
+    print(result)
