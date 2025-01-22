@@ -34,4 +34,4 @@ RUN python -m patchright install chromium
 RUN pip install logmagix
 # Expose port 5000
 EXPOSE 5000
-CMD ["python", "main.py"]
+CMD ["xvfb-run", "-a", "python", "main.py"]
