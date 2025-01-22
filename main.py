@@ -68,8 +68,8 @@ class TurnstileSolver:
             "--disable-backgrounding-occluded-windows",
             "--disable-renderer-backgrounding",
             "--window-position=2000,2000",
+            "--disable-gpu",  # Tambahkan argumen ini
         ]
- 
 
     @debug
     def _setup_page(self, context: BrowserContext, url: str, sitekey: str = None) -> Page:
@@ -225,6 +225,6 @@ if __name__ == "__main__":
         sitekey="0x4AAAAAAA5uSgCPW0Bgjzmf",
         invisible=True,
         debug=True,
-        headless=True
+        headless=True  # Pastikan headless diset ke True
     )
     print(result)
