@@ -13,4 +13,4 @@ RUN python -m patchright install chromium
 
 # Expose port 5000
 EXPOSE 5000
-CMD ["fastapi", "run", "main.py", "--port", "5000"]
+CMD ["python", "main.py"]
