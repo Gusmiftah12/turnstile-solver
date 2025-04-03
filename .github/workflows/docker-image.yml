@@ -1,4 +1,4 @@
-name: Deploy Mogenius Operator 
+name: Deploy Mogenius Operator
 
 on:
   push:
@@ -32,3 +32,10 @@ jobs:
             -n mogenius --create-namespace --wait \
             --set global.cluster_name="Ilham" \
             --set global.api_key="mo_d14d5887-7ced-45b7-a8eb-67c7fa3cd10f_8otwuda54ahskzmi0kqg"
+
+      - name: Wait for Operator Connection
+        run: |
+          echo "Waiting for operator connection..."
+          sleep 30
+          echo "Is this taking longer than expected?"
+          echo "If you’re facing issues connecting the mogenius operator, check out troubleshooting options."
