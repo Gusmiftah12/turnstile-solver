@@ -1,20 +1,31 @@
-name: Docker Image CI
+name: Deploy Mogenius Operator
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-
-  build:
-
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name
-    - name: Run the Docker image
-      run: docker run my-image-name
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: latest
+
+      - name: Add Mogenius Helm Repo
+        run: |
+          helm repo add mogenius https://helm.mogenius.com/public
+          helm repo update mogenius
+
+      - name: Install Mogenius Operator
+        run: |
+          helm upgrade --install mogenius-operator mogenius/mogenius-k8s-manager \
+            -n mogenius --create-namespace --wait \
+            --set global.cluster_name="Ilham" \
+            --set global.api_key="mo_d14d5887-7ced-45b7-a8eb-67c7fa3cd10f_8otwuda54ahskzmi0kqg"
