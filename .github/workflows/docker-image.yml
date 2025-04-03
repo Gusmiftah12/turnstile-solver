@@ -36,6 +36,6 @@ jobs:
       - name: Wait for Operator Connection
         run: |
           echo "Waiting for operator connection..."
-          sleep 30
+          sleep 320
           echo "Is this taking longer than expected?"
           echo "If you’re facing issues connecting the mogenius operator, check out troubleshooting options."
