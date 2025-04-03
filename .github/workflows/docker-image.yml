@@ -18,13 +18,16 @@ jobs:
         with:
           version: latest
 
-      - name: Add Mogenius Helm Repo
-        run: |
-          helm repo add mogenius https://helm.mogenius.com/public
-          helm repo update mogenius
+      - name: Setup Kubernetes with kind
+        uses: helm/kind-action@v1
+
+      - name: Verify Kubernetes Context
+        run: kubectl config current-context
 
       - name: Install Mogenius Operator
         run: |
+          helm repo add mogenius https://helm.mogenius.com/public
+          helm repo update mogenius
           helm upgrade --install mogenius-operator mogenius/mogenius-k8s-manager \
             -n mogenius --create-namespace --wait \
             --set global.cluster_name="Ilham" \
