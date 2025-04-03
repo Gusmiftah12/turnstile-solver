@@ -1,4 +1,4 @@
-name: Deploy Mogenius Operator
+name: Deploy Mogenius Operator 
 
 on:
   push:
